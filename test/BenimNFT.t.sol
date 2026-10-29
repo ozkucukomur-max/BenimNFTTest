@@ -40,6 +40,21 @@ contract BenimNFTTest is Test {
         assertEq(nft.ownerOf(1), kullanici);
     }
 
+    // Test: Sahip mint'i kapatabilmeli ve mint engellenmeli.
+    function testSahipMintiKapatabilir() public {
+        nft.mintiAc(true);
+        nft.mintiAc(false);
+
+        address kullanici = address(0x4321);
+        vm.deal(kullanici, 1 ether);
+
+        vm.expectRevert(BenimNFT.MintKapali.selector);
+        vm.prank(kullanici);
+        nft.mint{value: 0.01 ether}();
+
+        assertEq(nft.toplamMint(), 0);
+    }
+
     // Test 3: Yanlis odeme reddedilmeli.
     function testYanlisOdemeBasarisizOlur() public {
         nft.mintiAc(true);
