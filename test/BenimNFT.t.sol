@@ -55,6 +55,27 @@ contract BenimNFTTest is Test {
         assertEq(nft.toplamMint(), 0);
     }
 
+    // Test: Sahip temel URI'yi ayarlayabilmeli.
+    function testSahipTemelURIyiAyarlar() public {
+        nft.temelURIAyarla("https://ornek.com/metadata/");
+
+        nft.mintiAc(true);
+        address kullanici = address(0x1234);
+        vm.deal(kullanici, 1 ether);
+
+        vm.prank(kullanici);
+        nft.mint{value: 0.01 ether}();
+
+        assertEq(nft.tokenURI(1), "https://ornek.com/metadata/1");
+    }
+
+    // Test: Yetkisiz kullanıcı temel URI'yi değiştirememeli.
+    function testBaskasiTemelURIyiDegistiremez() public {
+        vm.prank(address(0x5678));
+        vm.expectRevert();
+        nft.temelURIAyarla("https://kotu-site.com/");
+    }
+
     // Test 3: Yanlis odeme reddedilmeli.
     function testYanlisOdemeBasarisizOlur() public {
         nft.mintiAc(true);
