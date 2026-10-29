@@ -34,8 +34,8 @@ contract BenimNFT is ERC721, Ownable {
         mintSayisi[msg.sender] += 1;
         uint256 tokenId = ++toplamMint; // ilk token 1 olur
 
-        _safeMint(msg.sender, tokenId);
         emit NFTMintlendi(msg.sender, tokenId, msg.value);
+        _safeMint(msg.sender, tokenId);
     }
 
     function mintiAc(bool acik) external onlyOwner {
