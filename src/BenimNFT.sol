@@ -22,11 +22,8 @@ contract BenimNFT is ERC721, Ownable {
     error CekimBasarisiz();
 
     constructor() ERC721("Benim NFT", "BNFT") Ownable(msg.sender) {}
-event NFTMintlendi(
-    address indexed alici,
-    uint256 indexed tokenId,
-    uint256 fiyat
-);
+    event NFTMintlendi(address indexed alici, uint256 indexed tokenId, uint256 fiyat);
+
     function mint() external payable {
         if (!mintAcik) revert MintKapali();
         if (toplamMint >= MAKS_ARZ) revert ArzTukendi();
@@ -38,7 +35,8 @@ event NFTMintlendi(
         uint256 tokenId = ++toplamMint; // ilk token 1 olur
 
         _safeMint(msg.sender, tokenId);
- emit NFTMintlendi(msg.sender, tokenId, msg.value);   }
+        emit NFTMintlendi(msg.sender, tokenId, msg.value);
+    }
 
     function mintiAc(bool acik) external onlyOwner {
         mintAcik = acik;
@@ -49,7 +47,7 @@ event NFTMintlendi(
     }
 
     function cekimYap() external onlyOwner {
-        (bool basarili, ) = payable(owner()).call{value: address(this).balance}("");
+        (bool basarili,) = payable(owner()).call{value: address(this).balance}("");
         if (!basarili) revert CekimBasarisiz();
     }
 

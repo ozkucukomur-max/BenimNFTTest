@@ -35,13 +35,7 @@ contract BenimNFTTest is Test {
     function testYanlisOdemeBasarisizOlur() public {
         nft.mintiAc(true);
 
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                BenimNFT.YanlisOdeme.selector,
-                0.005 ether,
-                0.01 ether
-            )
-        );
+        vm.expectRevert(abi.encodeWithSelector(BenimNFT.YanlisOdeme.selector, 0.005 ether, 0.01 ether));
 
         nft.mint{value: 0.005 ether}();
     }
@@ -68,7 +62,8 @@ contract BenimNFTTest is Test {
         assertEq(nft.mintSayisi(kullanici), 3);
         assertEq(nft.toplamMint(), 3);
     }
- // Test 5: Toplam arz 100 NFT'yi asamaz.
+
+    // Test 5: Toplam arz 100 NFT'yi asamaz.
     function testToplamArzAsilamaz() public {
         nft.mintiAc(true);
 
@@ -91,7 +86,8 @@ contract BenimNFTTest is Test {
 
         assertEq(nft.toplamMint(), 100);
     }
- // Test 6: Sözlesme sahibi biriken parayi cekebilmeli.
+
+    // Test 6: Sözlesme sahibi biriken parayi cekebilmeli.
     function testSahipParaCekebilir() public {
         nft.mintiAc(true);
 
@@ -124,6 +120,6 @@ contract BenimNFTTest is Test {
 
         assertEq(address(nft).balance, 0);
     }
- // Test sozlesmesi ETH kabul edebilsin.
+    // Test sozlesmesi ETH kabul edebilsin.
     receive() external payable {}
 }

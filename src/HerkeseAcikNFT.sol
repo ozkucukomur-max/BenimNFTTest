@@ -11,8 +11,8 @@ contract HerkeseAcikNFT is ERC721, Ownable {
     uint256 public constant MAX_SUPPLY = 1000;
     uint256 public constant MAX_PER_WALLET = 5;
 
-    uint256 public mintPrice;      // NFT başına fiyat (wei cinsinden)
-    uint256 public totalSupply;    // Şimdiye kadar basılan toplam NFT
+    uint256 public mintPrice; // NFT başına fiyat (wei cinsinden)
+    uint256 public totalSupply; // Şimdiye kadar basılan toplam NFT
 
     mapping(address => uint256) public mintedCount; // Cüzdan başına basılan adet
 
@@ -33,10 +33,7 @@ contract HerkeseAcikNFT is ERC721, Ownable {
     error WithdrawFailed();
 
     // ---------- Kurucu ----------
-    constructor(uint256 initialPrice, string memory baseURI_)
-        ERC721("Herkese Acik NFT", "HNFT")
-        Ownable(msg.sender)
-    {
+    constructor(uint256 initialPrice, string memory baseURI_) ERC721("Herkese Acik NFT", "HNFT") Ownable(msg.sender) {
         mintPrice = initialPrice;
         _baseTokenURI = baseURI_;
     }
@@ -75,7 +72,7 @@ contract HerkeseAcikNFT is ERC721, Ownable {
         uint256 balance = address(this).balance;
         if (balance == 0) revert NothingToWithdraw();
 
-        (bool ok, ) = payable(owner()).call{value: balance}("");
+        (bool ok,) = payable(owner()).call{value: balance}("");
         if (!ok) revert WithdrawFailed();
 
         emit Withdrawn(owner(), balance);
