@@ -1,66 +1,102 @@
-## Foundry
+# NFT Smart Contracts — Solidity & Foundry
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+Two ERC-721 NFT smart contracts built with Solidity, OpenZeppelin, and Foundry.
 
-Foundry consists of:
+## Contracts
 
-- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
-- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
-- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
-- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+### BenimNFT
+- Fixed mint price: 0.01 ETH
+- Maximum supply: 100 NFTs
+- Maximum 3 NFTs per wallet
+- Owner-controlled minting and base URI
+- Owner-only withdrawals
 
-## Documentation
+### HerkeseAcikNFT
+- Maximum supply: 1,000 NFTs
+- Maximum 5 NFTs per wallet
+- Configurable mint price and base URI
+- Batch minting
+- Owner-only withdrawals
 
-https://book.getfoundry.sh/
+## Security and Testing
 
-## Usage
+- 26 Foundry tests passed in the latest local run.
+- Tests cover minting, payment validation, supply and wallet limits, access control, reentrancy attempts, and failed withdrawals.
+- Slither static analysis was performed; remaining findings require contextual review.
+- Automated tests and static analysis do not replace a professional security audit.
 
-### Build
+## Requirements
 
-```shell
-$ forge build
+- Git
+- Foundry: https://book.getfoundry.sh/
+
+## Setup
+
+```bash
+git clone https://github.com/ozkucukomur-max/BenimNFTTest.git
+cd BenimNFTTest
+forge install
 ```
 
-### Test
+## Commands
 
-```shell
-$ forge test
+```bash
+forge build
+forge test -vv
+forge fmt --check
 ```
 
-### Format
+## Technology Stack
 
-```shell
-$ forge fmt
+- Solidity
+- Foundry / Forge
+- OpenZeppelin Contracts
+- Slither
+
+## Important Notes
+
+- These contracts have not been represented as professionally audited.
+- Passing tests do not guarantee the absence of vulnerabilities.
+- Never commit private keys, seed phrases, or other secrets.
+
+## License
+
+MIT
+
+## Requirements
+
+- Git
+- Foundry: https://book.getfoundry.sh/
+
+## Setup
+
+```bash
+git clone https://github.com/ozkucukomur-max/BenimNFTTest.git
+cd BenimNFTTest
+forge install
 ```
 
-### Gas Snapshots
+## Commands
 
-```shell
-$ forge snapshot
+```bash
+forge build
+forge test -vv
+forge fmt --check
 ```
 
-### Anvil
+## Technology Stack
 
-```shell
-$ anvil
-```
+- Solidity
+- Foundry / Forge
+- OpenZeppelin Contracts
+- Slither
 
-### Deploy
+## Important Notes
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
+- These contracts have not been represented as professionally audited.
+- Passing tests do not guarantee the absence of vulnerabilities.
+- Never commit private keys, seed phrases, or other secrets.
 
-### Cast
+## License
 
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+MIT
