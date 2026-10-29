@@ -51,6 +51,21 @@ contract HerkeseAcikNFTTest is Test {
         assertEq(nft.mintPrice(), 0.02 ether);
     }
 
+    function testSahipBaseURIyiDegistirir() public {
+        nft.setBaseURI("ipfs://yeni-metadata/");
+
+        vm.prank(alici);
+        nft.mint{value: sabitFiyat}(1);
+
+        assertEq(nft.tokenURI(1), "ipfs://yeni-metadata/1");
+    }
+
+    function testBaskasiBaseURIyiDegistiremez() public {
+        vm.prank(alici);
+        vm.expectRevert();
+        nft.setBaseURI("ipfs://kotu-metadata/");
+    }
+
     function testBaskasiFiyatDegistiremez() public {
         vm.prank(alici);
         vm.expectRevert();
