@@ -17,6 +17,15 @@ contract BenimNFTTest is Test {
         nft.mint{value: 0.01 ether}();
     }
 
+    // Test: Yetkisiz kullanici mint'i acamamali.
+    function testBaskasiMintiAcamaz() public {
+        address baskasi = address(0x5678);
+
+        vm.prank(baskasi);
+        vm.expectRevert();
+        nft.mintiAc(true);
+    }
+
     // Test 2: Mint acikken NFT basarili sekilde basilabilmeli.
     function testMintAcikkenNFTBasariliOlur() public {
         nft.mintiAc(true);
