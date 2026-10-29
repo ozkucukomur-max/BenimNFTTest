@@ -40,25 +40,22 @@ contract BenimNFTTest is Test {
         nft.mint{value: 0.005 ether}();
     }
 
-    // Test 4: Bir cüzdan en fazla 3 NFT basabilmeli.
+    // Test 4: Bir cuzdan en fazla 3 NFT basabilmeli.
     function testCuzdanLimitiAsilamaz() public {
         nft.mintiAc(true);
 
         address kullanici = address(0x1234);
         vm.deal(kullanici, 1 ether);
 
-        // Ayni kullanici ilk 3 NFT'yi basar.
         for (uint256 i = 0; i < 3; i++) {
             vm.prank(kullanici);
             nft.mint{value: 0.01 ether}();
         }
 
-        // 4. mint denemesi CuzdanLimitiAsildi hatasi vermeli.
         vm.expectRevert(BenimNFT.CuzdanLimitiAsildi.selector);
         vm.prank(kullanici);
         nft.mint{value: 0.01 ether}();
 
-        // Basarili mint sayisi 3 olarak kalmali.
         assertEq(nft.mintSayisi(kullanici), 3);
         assertEq(nft.toplamMint(), 3);
     }
@@ -87,7 +84,7 @@ contract BenimNFTTest is Test {
         assertEq(nft.toplamMint(), 100);
     }
 
-    // Test 6: Sözlesme sahibi biriken parayi cekebilmeli.
+    // Test 6: Sozlesme sahibi biriken parayi cekebilmeli.
     function testSahipParaCekebilir() public {
         nft.mintiAc(true);
 
@@ -114,12 +111,51 @@ contract BenimNFTTest is Test {
         nft.cekimYap();
     }
 
-    // Test 8: Sözlesmede para yoksa cekim bakiyeyi sifir birakmali.
+    // Test 8: Bos bakiyede cekim basarili olmali.
     function testBosBakiyedeCekimBasariliOlur() public {
         nft.cekimYap();
 
         assertEq(address(nft).balance, 0);
     }
+
+    // Test 9: Yeniden giris saldirisi cuzdan limitini asamamali.
+    function testYenidenGirisSaldirisiCuzdanLimitiniAsamaz() public {
+        nft.mintiAc(true);
+
+        YenidenGirisSaldirgani saldirgan = new YenidenGirisSaldirgani(nft);
+        vm.deal(address(saldirgan), 1 ether);
+
+        saldirgan.saldir();
+
+        assertEq(nft.mintSayisi(address(saldirgan)), 3);
+        assertEq(nft.toplamMint(), 3);
+        assertEq(saldirgan.basariliMint(), 2);
+    }
+
     // Test sozlesmesi ETH kabul edebilsin.
+    receive() external payable {}
+}
+
+// Yeniden giris saldirisini deneyen test sozlesmesi.
+contract YenidenGirisSaldirgani {
+    BenimNFT public immutable nft;
+    uint256 public basariliMint;
+
+    constructor(BenimNFT _nft) {
+        nft = _nft;
+    }
+
+    function saldir() external {
+        nft.mint{value: 0.01 ether}();
+    }
+
+    function onERC721Received(address, address, uint256, bytes calldata) external returns (bytes4) {
+        try nft.mint{value: 0.01 ether}() {
+            basariliMint += 1;
+        } catch {}
+
+        return 0x150b7a02;
+    }
+
     receive() external payable {}
 }
