@@ -21,3 +21,4 @@ docs/
 .env
 .env.*
 !.env.example
+ipfs-upload/
