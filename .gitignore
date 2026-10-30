@@ -6,6 +6,9 @@ out/
 .logs/
 .ignore/
 
+# Local folder prepared for IPFS (Pinata) upload
+ipfs-upload/
+
 # Ignores development broadcast logs
 !/broadcast
 /broadcast/*/31337/
